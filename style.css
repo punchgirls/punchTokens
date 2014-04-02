@@ -1,0 +1,23 @@
+body {
+  text-align: center;
+}
+
+ul {
+  margin-top: 100px;
+  padding: 0;
+  list-style: none;
+}
+
+input {
+  width: 500px;
+  height: 40px;
+}
+
+button {
+  height: 40px;
+  width: 250px;
+  color: white;
+  border: none;
+  background: aquamarine;
+  font-size: 1em;
+}
