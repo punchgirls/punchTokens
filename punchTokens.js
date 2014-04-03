@@ -1,7 +1,7 @@
 function createToken (input) {
   token = document.createElement("li");
   token.innerHTML = input;
-
+  token.setAttribute("class", "token");
   return token;
 }
 

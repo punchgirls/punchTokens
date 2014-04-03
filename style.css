@@ -21,3 +21,10 @@ button {
   background: aquamarine;
   font-size: 1em;
 }
+
+.token {
+  display: inline-block;
+  padding: 3px 7px;
+  border: 2px solid cornflowerblue;
+  font-size: 1.2em;
+}
