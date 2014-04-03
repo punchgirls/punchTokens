@@ -12,6 +12,7 @@ function addToken() {
   lastChild = document.getElementById("last-child");
 
   tokensList.insertBefore(token, lastChild);
+  inputField.value = "";
 }
 
 tokens.onsubmit = function() {
