@@ -85,6 +85,16 @@ inputField.onblur = function() {
   emptyAutocompleteList();
 };
 
+function moveUp() {
+  autocompleteArray = autocompleteList.children;
+
+  if (highlightedSkillIndex > 0) {
+    autocompleteArray[highlightedSkillIndex].removeAttribute("id");
+    autocompleteArray[--highlightedSkillIndex].setAttribute("id", "highlight");
+    console.log("lengde: " + autocompleteArray.length + " index: " + highlightedSkillIndex);
+  }
+}
+
 function moveDown() {
   autocompleteArray = autocompleteList.children;
 
@@ -106,6 +116,9 @@ inputField.onkeydown = function(e) {
     break;
     case 27:
       emptyAutocompleteList();
+    break;
+    case 38:
+      moveUp();
     break;
     case 40:
       moveDown();
