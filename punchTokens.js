@@ -60,6 +60,18 @@ function deleteToken(token) {
   }
 }
 
+inputField.onfocus = function(e) {
+  e = e || window.event;
+
+  var autocompleteList = document.getElementById("autocomplete-list");
+
+  for (var key in skillsList) {
+    var skill = document.createElement("li");
+    skill.innerHTML = skillsList[key].skill;
+    autocompleteList.appendChild(skill);
+  }
+};
+
 inputField.onkeydown = function(e) {
   e = e || window.event;
 
