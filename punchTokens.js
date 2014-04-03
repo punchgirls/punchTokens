@@ -43,15 +43,13 @@ function createToken (input) {
 }
 
 function addToken() {
-  var input = inputField.value;
+  var autocompleteArray = autocompleteList.children
 
-  if (input != "") {
-    var token = createToken(input);
-    lastChild = document.getElementById("last-child");
+  var token = createToken(autocompleteArray[highlightedSkillIndex].innerHTML);
+  lastChild = document.getElementById("last-child");
 
-    tokensList.insertBefore(token, lastChild);
-    inputField.value = "";
-  }
+  tokensList.insertBefore(token, lastChild);
+  inputField.value = "";
 }
 
 function deleteToken(token) {
@@ -63,6 +61,16 @@ function deleteToken(token) {
   }
 }
 
+function showAutocompleteList() {
+  for (var key in skillsList) {
+    var skill = document.createElement("li");
+    skill.innerHTML = skillsList[key].skill;
+    autocompleteList.appendChild(skill);
+  }
+
+  autocompleteList.firstChild.setAttribute("id", "highlight");
+}
+
 function emptyAutocompleteList() {
   var array = autocompleteList.children;
 
@@ -72,13 +80,7 @@ function emptyAutocompleteList() {
 }
 
 inputField.onfocus = function() {
-  for (var key in skillsList) {
-    var skill = document.createElement("li");
-    skill.innerHTML = skillsList[key].skill;
-    autocompleteList.appendChild(skill);
-  }
-
-  autocompleteList.firstChild.setAttribute("id", "highlight");
+  showAutocompleteList();
 };
 
 inputField.onblur = function() {
@@ -121,16 +123,32 @@ inputField.onkeydown = function(e) {
       moveUp();
     break;
     case 40:
+      if(highlightedSkillIndex == -1) {
+        highlightedSkillIndex = 0;
+        showAutocompleteList();
+        break;
+      }
       moveDown();
     break;
   }
 };
 
 tokens.onsubmit = function() {
-  if (inputField.value != "") {
-    addToken();
+  var tokenArray = tokensList.getElementsByClassName("token");
+
+  if (highlightedSkillIndex > -1) {
+    if (tokenArray.length < 5) {
+      addToken();
+      emptyAutocompleteList();
+      highlightedSkillIndex = -1;
+    } else {
+      var errorMsg = document.getElementById("error-msg");
+      errorMsg.innerHTML = "You can add up to 5 skills.";
+      emptyAutocompleteList();
+      highlightedSkillIndex = -1;
+    }
+
   } else {
-    var tokenArray = tokensList.getElementsByClassName("token");
     var tokenString = "";
 
     for (var i = 0; i < tokenArray.length; i++) {
