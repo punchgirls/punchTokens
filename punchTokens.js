@@ -30,7 +30,7 @@ function createToken (input) {
 
   x.onclick = function() {
     deleteToken(token);
-  }
+  };
 
   token.setAttribute("class", "token");
   token.appendChild(tokenValue);
@@ -82,7 +82,7 @@ inputField.onkeydown = function(e) {
       }
     break;
   }
-}
+};
 
 tokens.onsubmit = function() {
   if (inputField.value != "") {
