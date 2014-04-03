@@ -1,6 +1,8 @@
 var tokensList = document.getElementById("tokens-list");
 var inputField = document.getElementById("input-field");
+var autocompleteList = document.getElementById("autocomplete-list");
 var skillsList = getSkills();
+
 
 function getSkills() {
   if (window.XMLHttpRequest) {
@@ -60,15 +62,19 @@ function deleteToken(token) {
   }
 }
 
-inputField.onfocus = function(e) {
-  e = e || window.event;
-
-  var autocompleteList = document.getElementById("autocomplete-list");
-
+inputField.onfocus = function() {
   for (var key in skillsList) {
     var skill = document.createElement("li");
     skill.innerHTML = skillsList[key].skill;
     autocompleteList.appendChild(skill);
+  }
+};
+
+inputField.onblur = function() {
+  var array = autocompleteList.children;
+
+  for(var i = array.length - 1; i > -1; i--) {
+    autocompleteList.removeChild(array[i]);
   }
 };
 
@@ -93,8 +99,8 @@ tokens.onsubmit = function() {
 
     for (var i = 0; i < tokenArray.length; i++) {
       tokenString = tokenString + tokenArray[i].firstChild.innerHTML + ",";
-      console.log(tokenString);
     }
+
     alert("Form submitted with the following values: " + tokenString);
   }
 
