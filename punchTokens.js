@@ -62,6 +62,14 @@ function deleteToken(token) {
   }
 }
 
+function emptyAutocompleteList() {
+  var array = autocompleteList.children;
+
+  for(var i = array.length - 1; i > -1; i--) {
+    autocompleteList.removeChild(array[i]);
+  }
+}
+
 inputField.onfocus = function() {
   for (var key in skillsList) {
     var skill = document.createElement("li");
@@ -71,11 +79,7 @@ inputField.onfocus = function() {
 };
 
 inputField.onblur = function() {
-  var array = autocompleteList.children;
-
-  for(var i = array.length - 1; i > -1; i--) {
-    autocompleteList.removeChild(array[i]);
-  }
+  emptyAutocompleteList();
 };
 
 inputField.onkeydown = function(e) {
