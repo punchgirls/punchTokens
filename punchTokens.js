@@ -1,18 +1,39 @@
 var tokensList = document.getElementById("tokens-list");
 var inputField = document.getElementById("input-field");
+var skillsList = getSkills();
+
+function getSkills() {
+  if (window.XMLHttpRequest) {
+    request = new XMLHttpRequest();
+  } else {
+    request = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  request.open("GET", "/skills.json");
+
+  request.onreadystatechange = function() {
+    if ((request.readyState===4) && (request.status===200)) {
+      skillsList = JSON.parse(request.responseText);
+    }
+  }
+
+  request.send();
+}
 
 function createToken (input) {
   var token = document.createElement("li");
-  token.innerHTML = input;
-  token.setAttribute("class", "token");
-
+  var tokenValue = document.createElement("span");
   var x = document.createElement("span");
+
+  tokenValue.innerHTML = input;
   x.innerHTML = " x ";
 
   x.onclick = function() {
     deleteToken(token);
   }
 
+  token.setAttribute("class", "token");
+  token.appendChild(tokenValue);
   token.appendChild(x);
 
   return token;
@@ -55,7 +76,14 @@ tokens.onsubmit = function() {
   if (inputField.value != "") {
     addToken();
   } else {
-   alert("Form submitted!");
+    var tokenArray = tokensList.getElementsByClassName("token");
+    var tokenString = "";
+
+    for (var i = 0; i < tokenArray.length; i++) {
+      tokenString = tokenString + tokenArray[i].firstChild.innerHTML + ",";
+      console.log(tokenString);
+    }
+    alert("Form submitted with the following values: " + tokenString);
   }
 
   return false;
