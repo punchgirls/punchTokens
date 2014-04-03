@@ -1,3 +1,6 @@
+tokensList = document.getElementById("tokens-list");
+inputField = document.getElementById("input-field");
+
 function createToken (input) {
   token = document.createElement("li");
   token.innerHTML = input;
@@ -6,12 +9,10 @@ function createToken (input) {
 }
 
 function addToken() {
-  inputField = document.getElementById("input-field");
   input = inputField.value;
 
   if (input != "") {
     token = createToken(input);
-    tokensList = document.getElementById("tokens-list");
     lastChild = document.getElementById("last-child");
 
     tokensList.insertBefore(token, lastChild);
@@ -19,8 +20,25 @@ function addToken() {
   }
 }
 
+function deleteToken() {
+  lastToken = tokensList.children[tokensList.children.length - 2];
+  tokensList.removeChild(lastToken);
+}
+
+inputField.onkeydown = function(e) {
+  e = e || window.event;
+
+  switch (e.keyCode) {
+    case 8:
+      if (inputField.value == "") {
+        deleteToken();
+      }
+    break;
+  }
+}
+
 tokens.onsubmit = function() {
-  if (document.getElementById("input-field").value != "") {
+  if (inputField.value != "") {
     addToken();
   } else {
    alert("Form submitted!");
