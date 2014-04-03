@@ -7,15 +7,24 @@ function createToken (input) {
 
 function addToken() {
   inputField = document.getElementById("input-field");
-  token = createToken(inputField.value);
-  tokensList = document.getElementById("tokens-list");
-  lastChild = document.getElementById("last-child");
+  input = inputField.value;
 
-  tokensList.insertBefore(token, lastChild);
-  inputField.value = "";
+  if (input != "") {
+    token = createToken(input);
+    tokensList = document.getElementById("tokens-list");
+    lastChild = document.getElementById("last-child");
+
+    tokensList.insertBefore(token, lastChild);
+    inputField.value = "";
+  }
 }
 
 tokens.onsubmit = function() {
-  addToken();
+  if (document.getElementById("input-field").value != "") {
+    addToken();
+  } else {
+   alert("Form submitted!");
+  }
+
   return false;
-}
+};
