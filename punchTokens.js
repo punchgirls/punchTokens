@@ -31,10 +31,10 @@ function addToken() {
 }
 
 function deleteToken(token) {
-  var tokenArray = tokensList.children;
-  var token = token || tokenArray[tokenArray.length - 2];
+  var tokensArray = tokensList.children;
+  var token = token || tokensArray[tokensArray.length - 2];
 
-  if (tokenArray.length > 1) {
+  if (tokensArray.length > 1) {
     tokensList.removeChild(token);
   }
 }
