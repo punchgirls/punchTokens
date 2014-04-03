@@ -91,6 +91,9 @@ inputField.onkeydown = function(e) {
         deleteToken();
       }
     break;
+    case 27:
+      emptyAutocompleteList();
+    break;
   }
 };
 
