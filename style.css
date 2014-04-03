@@ -28,3 +28,8 @@ button {
   border: 2px solid cornflowerblue;
   font-size: 1.2em;
 }
+
+#highlight {
+  font-weight: bold;
+  color: aquamarine;
+}

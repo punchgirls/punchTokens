@@ -2,6 +2,7 @@ var tokensList = document.getElementById("tokens-list");
 var inputField = document.getElementById("input-field");
 var autocompleteList = document.getElementById("autocomplete-list");
 var skillsList = getSkills();
+var highlightedSkillIndex = 0;
 
 
 function getSkills() {
@@ -76,11 +77,23 @@ inputField.onfocus = function() {
     skill.innerHTML = skillsList[key].skill;
     autocompleteList.appendChild(skill);
   }
+
+  autocompleteList.firstChild.setAttribute("id", "highlight");
 };
 
 inputField.onblur = function() {
   emptyAutocompleteList();
 };
+
+function moveDown() {
+  autocompleteArray = autocompleteList.children;
+
+  if (highlightedSkillIndex < autocompleteArray.length - 1) {
+    autocompleteArray[highlightedSkillIndex].removeAttribute("id");
+    autocompleteArray[++highlightedSkillIndex].setAttribute("id", "highlight");
+    console.log("lengde: " + autocompleteArray.length + " index: " + highlightedSkillIndex);
+  }
+}
 
 inputField.onkeydown = function(e) {
   e = e || window.event;
@@ -93,6 +106,9 @@ inputField.onkeydown = function(e) {
     break;
     case 27:
       emptyAutocompleteList();
+    break;
+    case 40:
+      moveDown();
     break;
   }
 };
