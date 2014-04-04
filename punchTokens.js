@@ -121,10 +121,11 @@ inputField.oninput = function() {
     }
   }
 
-  if (autocompleteList.children.length != 0) {
+  if (autocompleteArray.length != 0) {
     autocompleteList.firstChild.setAttribute("id", "highlight");
     highlightIndex = 0;
   } else {
+    hideAutocomplete();
     highlightIndex = -1;
   }
 };
@@ -164,6 +165,7 @@ tokens.onsubmit = function() {
     } else {
       var errorMsg = document.getElementById("error-msg");
       errorMsg.innerHTML = "You can add up to 5 skills.";
+      hideAutocomplete();
     }
   } else {
     var tokenString = "";
