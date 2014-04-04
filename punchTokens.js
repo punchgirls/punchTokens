@@ -57,9 +57,9 @@ function addToken(value) {
     errorMsg.innerHTML = "You can add up to 5 skills.";
   }
 
-  inputField.value = "";
   highlightIndex = -1;
   hideAutocomplete();
+  inputField.value = "";
 }
 
 function deleteToken(token) {
@@ -75,8 +75,13 @@ function addToAutocomplete(value) {
   var skill = document.createElement("li");
   skill.innerHTML = value;
 
+  skill.onmouseover = function() {
+    autocompleteArray[highlightIndex].removeAttribute("id");
+  }
+
   skill.onmousedown = function() {
     addToken(value);
+    return false;
   };
 
   autocompleteList.appendChild(skill);
@@ -181,9 +186,9 @@ tokens.onsubmit = function() {
     var tokenString = "";
 
     while(tokenArray.length > 0) {
-      var firstChild = tokenList.firstChild;
-      tokenString = tokenString + firstChild.firstChild.innerHTML + ",";
-      tokenList.removeChild(firstChild);
+      var first = tokenList.firstElementChild;
+      tokenString = tokenString + first.firstChild.innerHTML + ",";
+      tokenList.removeChild(first);
     }
 
     alert("Form submitted with the following values: " + tokenString);
