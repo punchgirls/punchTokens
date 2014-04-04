@@ -24,12 +24,12 @@ function getSkills() {
   request.send();
 }
 
-function createToken (input) {
+function createToken (skill) {
   var token = document.createElement("li");
   var tokenValue = document.createElement("span");
   var x = document.createElement("span");
 
-  tokenValue.innerHTML = input;
+  tokenValue.innerHTML = skill;
   x.innerHTML = " x ";
 
   x.onclick = function() {
@@ -43,12 +43,15 @@ function createToken (input) {
   return token;
 }
 
-function addToken() {
-  var token = createToken(autocompleteArray[highlightIndex].innerHTML);
+function addToken(value) {
+  var value = value || autocompleteArray[highlightIndex].innerHTML;
+  var token = createToken(value);
+
   lastChild = document.getElementById("last-child");
 
   tokenList.insertBefore(token, lastChild);
   inputField.value = "";
+  highlightIndex = -1;
 }
 
 function deleteToken(token) {
@@ -63,6 +66,11 @@ function deleteToken(token) {
 function addToAutocomplete(value) {
   var skill = document.createElement("li");
   skill.innerHTML = value;
+
+  skill.onmousedown = function() {
+    addToken(value);
+  };
+
   autocompleteList.appendChild(skill);
 }
 
@@ -157,8 +165,6 @@ tokens.onsubmit = function() {
       var errorMsg = document.getElementById("error-msg");
       errorMsg.innerHTML = "You can add up to 5 skills.";
     }
-
-     highlightIndex = -1;
   } else {
     var tokenString = "";
 
