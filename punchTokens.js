@@ -31,6 +31,7 @@ function createToken (skill) {
 
   tokenValue.innerHTML = skill;
   x.innerHTML = " x ";
+  x.setAttribute("class", "token-delete");
 
   x.onclick = function() {
     deleteToken(token);

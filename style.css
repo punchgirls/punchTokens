@@ -38,6 +38,11 @@ button {
   font-size: 1.2em;
 }
 
+.token-delete {
+  cursor: hand;
+  cursor: pointer;
+}
+
 #highlight {
   font-weight: bold;
   color: aquamarine;
