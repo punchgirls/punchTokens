@@ -19,7 +19,7 @@ function getSkills() {
     if ((request.readyState===4) && (request.status===200)) {
       skillsList = JSON.parse(request.responseText);
     }
-  }
+  };
 
   request.send();
 }
@@ -77,7 +77,7 @@ function addToAutocomplete(value) {
 
   skill.onmouseover = function() {
     autocompleteArray[highlightIndex].removeAttribute("id");
-  }
+  };
 
   skill.onmousedown = function() {
     addToken(value);
@@ -141,7 +141,7 @@ inputField.oninput = function() {
     }
   }
 
-  if (autocompleteArray.length != 0) {
+  if (autocompleteArray.length !== 0) {
     autocompleteList.firstChild.setAttribute("id", "highlight");
     highlightIndex = 0;
   } else {
@@ -155,7 +155,7 @@ inputField.onkeydown = function(e) {
 
   switch (e.keyCode) {
     case 8:
-      if (inputField.value == "") {
+      if (inputField.value === "") {
         deleteToken();
       }
     break;
@@ -175,7 +175,7 @@ inputField.onkeydown = function(e) {
       moveUp();
     break;
     case 40:
-      if(highlightIndex == -1 && inputField.value == "") {
+      if(highlightIndex == -1 && inputField.value === "") {
         showAutocomplete();
         highlightIndex = 0;
         autocompleteList.firstChild.setAttribute("id", "highlight");
