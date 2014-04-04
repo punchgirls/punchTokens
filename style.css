@@ -13,6 +13,15 @@ input {
   height: 40px;
 }
 
+#autocomplete-list {
+  display: none;
+  width: 488px;
+  margin: -17px auto 0;
+  padding: 5px;
+  text-align: left;
+  border: 2px solid cornflowerblue;
+}
+
 button {
   height: 40px;
   width: 250px;

@@ -4,7 +4,7 @@ var autocompleteArray = autocompleteList.children;
 var tokenList = document.getElementById("tokens-list");
 var tokenArray = tokenList.getElementsByClassName("token");
 var skillsList = getSkills();
-var index = -1;
+var highlightIndex = -1;
 
 function getSkills() {
   if (window.XMLHttpRequest) {
@@ -44,7 +44,7 @@ function createToken (input) {
 }
 
 function addToken() {
-  var token = createToken(autocompleteArray[index].innerHTML);
+  var token = createToken(autocompleteArray[highlightIndex].innerHTML);
   lastChild = document.getElementById("last-child");
 
   tokenList.insertBefore(token, lastChild);
@@ -66,45 +66,46 @@ function addToAutocomplete(value) {
   autocompleteList.appendChild(skill);
 }
 
-function emptyAutocomplete() {
-  for(var i = autocompleteArray.length - 1; i > -1; i--) {
-    autocompleteList.removeChild(autocompleteArray[i]);
-  }
-}
-
 function showAutocomplete() {
+  autocompleteList.setAttribute("style", "display: block;");
   for (var key in skillsList) {
     addToAutocomplete(skillsList[key].skill);
   }
 }
 
+function hideAutocomplete() {
+  autocompleteList.innerHTML = "";
+  autocompleteList.setAttribute("style", "display: none;");
+}
+
 function moveUp() {
-  if (index > 0) {
-    autocompleteArray[index].removeAttribute("id");
-    autocompleteArray[--index].setAttribute("id", "highlight");
+  if (highlightIndex > 0) {
+    autocompleteArray[highlightIndex].removeAttribute("id");
+    autocompleteArray[--highlightIndex].setAttribute("id", "highlight");
   }
 }
 
 function moveDown() {
-  if (index < autocompleteArray.length - 1) {
-    autocompleteArray[index].removeAttribute("id");
-    autocompleteArray[++index].setAttribute("id", "highlight");
+  if (highlightIndex < autocompleteArray.length - 1) {
+    autocompleteArray[highlightIndex].removeAttribute("id");
+    autocompleteArray[++highlightIndex].setAttribute("id", "highlight");
   }
 }
 
 inputField.onfocus = function() {
   showAutocomplete();
-  autocompleteArray[++index].setAttribute("id", "highlight");
+  autocompleteArray[++highlightIndex].setAttribute("id", "highlight");
 };
 
 inputField.onblur = function() {
-  emptyAutocomplete();
+  hideAutocomplete();
 };
 
 inputField.oninput = function() {
   var regExp = new RegExp(inputField.value, "i");
 
-  emptyAutocomplete();
+  autocompleteList.innerHTML = "";
+  autocompleteList.setAttribute("style", "display: block;");
 
   for (var key in skillsList) {
     if (skillsList[key].skill.search(regExp) != -1 ) {
@@ -114,9 +115,9 @@ inputField.oninput = function() {
 
   if (autocompleteList.children.length != 0) {
     autocompleteList.firstChild.setAttribute("id", "highlight");
-    index = 0;
+    highlightIndex = 0;
   } else {
-    index = -1;
+    highlightIndex = -1;
   }
 };
 
@@ -130,15 +131,15 @@ inputField.onkeydown = function(e) {
       }
     break;
     case 27:
-      emptyAutocomplete();
+      autocompleteList.innerHTML = "";
     break;
     case 38:
       moveUp();
     break;
     case 40:
-      if(index == -1 && inputField.value == "") {
+      if(highlightIndex == -1 && inputField.value == "") {
         showAutocomplete();
-        index = 0;
+        highlightIndex = 0;
         autocompleteList.firstChild.setAttribute("id", "highlight");
         break;
       }
@@ -148,17 +149,16 @@ inputField.onkeydown = function(e) {
 };
 
 tokens.onsubmit = function() {
-  if (index > -1) {
+  if (highlightIndex > -1) {
     if (tokenArray.length < 5) {
       addToken();
-      emptyAutocomplete();
-      index = -1;
+      hideAutocomplete();
     } else {
       var errorMsg = document.getElementById("error-msg");
       errorMsg.innerHTML = "You can add up to 5 skills.";
-      emptyAutocomplete();
-      index = -1;
     }
+
+     highlightIndex = -1;
   } else {
     var tokenString = "";
 
