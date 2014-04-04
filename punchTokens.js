@@ -202,7 +202,7 @@ tokens.onsubmit = function() {
     hideAutocomplete();
     inputField.value = "";
 
-    alert("Form submitted with the following values: " + tokenString);
+    alert("Form submitted with the following values: " + tokenString.slice(0, -1));
 
     inputField.blur();
   }
