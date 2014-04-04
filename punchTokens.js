@@ -1,9 +1,10 @@
-var tokensList = document.getElementById("tokens-list");
 var inputField = document.getElementById("input-field");
 var autocompleteList = document.getElementById("autocomplete-list");
+var autocompleteArray = autocompleteList.children;
+var tokenList = document.getElementById("tokens-list");
+var tokenArray = tokenList.getElementsByClassName("token");
 var skillsList = getSkills();
-var highlightedSkillIndex = 0;
-
+var index = -1;
 
 function getSkills() {
   if (window.XMLHttpRequest) {
@@ -43,69 +44,81 @@ function createToken (input) {
 }
 
 function addToken() {
-  var autocompleteArray = autocompleteList.children
-
-  var token = createToken(autocompleteArray[highlightedSkillIndex].innerHTML);
+  var token = createToken(autocompleteArray[index].innerHTML);
   lastChild = document.getElementById("last-child");
 
-  tokensList.insertBefore(token, lastChild);
+  tokenList.insertBefore(token, lastChild);
   inputField.value = "";
 }
 
 function deleteToken(token) {
-  var tokensArray = tokensList.children;
-  var token = token || tokensArray[tokensArray.length - 2];
+  var tokenArray = tokenList.children;
+  var token = token || tokenArray[tokenArray.length - 2];
 
-  if (tokensArray.length > 1) {
-    tokensList.removeChild(token);
+  if (tokenArray.length > 1) {
+    tokenList.removeChild(token);
   }
 }
 
-function showAutocompleteList() {
+function addToAutocomplete(value) {
+  var skill = document.createElement("li");
+  skill.innerHTML = value;
+  autocompleteList.appendChild(skill);
+}
+
+function emptyAutocomplete() {
+  for(var i = autocompleteArray.length - 1; i > -1; i--) {
+    autocompleteList.removeChild(autocompleteArray[i]);
+  }
+}
+
+function showAutocomplete() {
   for (var key in skillsList) {
-    var skill = document.createElement("li");
-    skill.innerHTML = skillsList[key].skill;
-    autocompleteList.appendChild(skill);
-  }
-
-  autocompleteList.firstChild.setAttribute("id", "highlight");
-}
-
-function emptyAutocompleteList() {
-  var array = autocompleteList.children;
-
-  for(var i = array.length - 1; i > -1; i--) {
-    autocompleteList.removeChild(array[i]);
+    addToAutocomplete(skillsList[key].skill);
   }
 }
-
-inputField.onfocus = function() {
-  showAutocompleteList();
-};
-
-inputField.onblur = function() {
-  emptyAutocompleteList();
-};
 
 function moveUp() {
-  autocompleteArray = autocompleteList.children;
-
-  if (highlightedSkillIndex > 0) {
-    autocompleteArray[highlightedSkillIndex].removeAttribute("id");
-    autocompleteArray[--highlightedSkillIndex].setAttribute("id", "highlight");
-    console.log("lengde: " + autocompleteArray.length + " index: " + highlightedSkillIndex);
+  if (index > 0) {
+    autocompleteArray[index].removeAttribute("id");
+    autocompleteArray[--index].setAttribute("id", "highlight");
   }
 }
 
 function moveDown() {
-  autocompleteArray = autocompleteList.children;
-
-  if (highlightedSkillIndex < autocompleteArray.length - 1) {
-    autocompleteArray[highlightedSkillIndex].removeAttribute("id");
-    autocompleteArray[++highlightedSkillIndex].setAttribute("id", "highlight");
-    console.log("lengde: " + autocompleteArray.length + " index: " + highlightedSkillIndex);
+  if (index < autocompleteArray.length - 1) {
+    autocompleteArray[index].removeAttribute("id");
+    autocompleteArray[++index].setAttribute("id", "highlight");
   }
 }
+
+inputField.onfocus = function() {
+  showAutocomplete();
+  autocompleteArray[++index].setAttribute("id", "highlight");
+};
+
+inputField.onblur = function() {
+  emptyAutocomplete();
+};
+
+inputField.oninput = function() {
+  var regExp = new RegExp(inputField.value, "i");
+
+  emptyAutocomplete();
+
+  for (var key in skillsList) {
+    if (skillsList[key].skill.search(regExp) != -1 ) {
+      addToAutocomplete(skillsList[key].skill);
+    }
+  }
+
+  if (autocompleteList.children.length != 0) {
+    autocompleteList.firstChild.setAttribute("id", "highlight");
+    index = 0;
+  } else {
+    index = -1;
+  }
+};
 
 inputField.onkeydown = function(e) {
   e = e || window.event;
@@ -117,15 +130,16 @@ inputField.onkeydown = function(e) {
       }
     break;
     case 27:
-      emptyAutocompleteList();
+      emptyAutocomplete();
     break;
     case 38:
       moveUp();
     break;
     case 40:
-      if(highlightedSkillIndex == -1) {
-        highlightedSkillIndex = 0;
-        showAutocompleteList();
+      if(index == -1 && inputField.value == "") {
+        showAutocomplete();
+        index = 0;
+        autocompleteList.firstChild.setAttribute("id", "highlight");
         break;
       }
       moveDown();
@@ -134,20 +148,17 @@ inputField.onkeydown = function(e) {
 };
 
 tokens.onsubmit = function() {
-  var tokenArray = tokensList.getElementsByClassName("token");
-
-  if (highlightedSkillIndex > -1) {
+  if (index > -1) {
     if (tokenArray.length < 5) {
       addToken();
-      emptyAutocompleteList();
-      highlightedSkillIndex = -1;
+      emptyAutocomplete();
+      index = -1;
     } else {
       var errorMsg = document.getElementById("error-msg");
       errorMsg.innerHTML = "You can add up to 5 skills.";
-      emptyAutocompleteList();
-      highlightedSkillIndex = -1;
+      emptyAutocomplete();
+      index = -1;
     }
-
   } else {
     var tokenString = "";
 
