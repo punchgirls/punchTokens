@@ -52,14 +52,14 @@ function addToken(value) {
     var lastChild = document.getElementById("last-child");
 
     tokenList.insertBefore(token, lastChild);
-    inputField.value = "";
-    highlightIndex = -1;
-    hideAutocomplete();
   } else {
     var errorMsg = document.getElementById("error-msg");
     errorMsg.innerHTML = "You can add up to 5 skills.";
-    hideAutocomplete();
   }
+
+  inputField.value = "";
+  highlightIndex = -1;
+  hideAutocomplete();
 }
 
 function deleteToken(token) {
@@ -147,6 +147,15 @@ inputField.onkeydown = function(e) {
         deleteToken();
       }
     break;
+    case 9:
+      if(autocompleteArray.length > 0) {
+        addToken();
+      } else {
+        inputField.value = "";
+      }
+
+      return false;
+    break;
     case 27:
       autocompleteList.innerHTML = "";
     break;
@@ -171,11 +180,17 @@ tokens.onsubmit = function() {
   } else {
     var tokenString = "";
 
-    for (var i = 0; i < tokenArray.length; i++) {
-      tokenString = tokenString + tokenArray[i].firstChild.innerHTML + ",";
+    while(tokenArray.length > 0) {
+      var firstChild = tokenList.firstChild;
+      tokenString = tokenString + firstChild.firstChild.innerHTML + ",";
+      tokenList.removeChild(firstChild);
     }
 
     alert("Form submitted with the following values: " + tokenString);
+
+    highlightIndex = -1;
+    hideAutocomplete();
+    inputField.blur();
   }
 
   return false;

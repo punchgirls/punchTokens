@@ -10,7 +10,7 @@ form {
 
 #token-list {
   width: 500px;
-  height: 40px;
+  min-height: 40px;
   border: 2px solid cornflowerblue;
   margin-top: 80px;
   margin-left: auto;
