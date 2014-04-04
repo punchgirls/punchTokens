@@ -114,6 +114,8 @@ function moveDown() {
 }
 
 inputField.onfocus = function() {
+  inputField.removeAttribute("placeholder");
+  inputField.setAttribute("style", "width: auto;");
   showAutocomplete();
   autocompleteArray[++highlightIndex].setAttribute("id", "highlight");
 };
@@ -191,10 +193,12 @@ tokens.onsubmit = function() {
       tokenList.removeChild(first);
     }
 
-    alert("Form submitted with the following values: " + tokenString);
-
     highlightIndex = -1;
     hideAutocomplete();
+    inputField.value = "";
+
+    alert("Form submitted with the following values: " + tokenString);
+
     inputField.blur();
   }
 
