@@ -113,11 +113,16 @@ function moveDown() {
   }
 }
 
+tokenList.onclick = function() {
+  inputField.focus();
+};
+
 inputField.onfocus = function() {
   inputField.removeAttribute("placeholder");
   inputField.setAttribute("style", "width: auto;");
   showAutocomplete();
-  autocompleteArray[++highlightIndex].setAttribute("id", "highlight");
+  highlightIndex = 0;
+  autocompleteArray[highlightIndex].setAttribute("id", "highlight");
 };
 
 inputField.onblur = function() {
